@@ -18,6 +18,17 @@ Element.prototype.match = function(selector){
   return (parsed) ? Selectors.Utils.filter(this, parsed, {}) : true;
 };
 
+// Element.match
+Element.match = function(el, selector){
+  if (!selector) return true;
+  selector = selector.toString();
+  var tagid = Selectors.Utils.parseTagAndID(selector);
+  var tag = tagid[0], id = tagid[1];
+  if (!Selectors.Filters.byID(el, id) || !Selectors.Filters.byTag(el, tag)) return false;
+  var parsed = Selectors.Utils.parseSelector(selector);
+  return (parsed) ? Selectors.Utils.filter(el, parsed, {}) : true;
+};
+
 // Provides polymorphic access to getElementById to Elements as well as documents, both of which
 // can be passed into Selectors.Utils.search as location for searching for subelements.
 Element.prototype.getElementById = function(id, nocash){
